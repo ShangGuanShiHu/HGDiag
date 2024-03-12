@@ -123,6 +123,9 @@ class TVDiag(object):
                     Z_f2rs.append(Z_f2r)
 
                 total_loss.backward()
+                # model.locator.clip_grad_norm()
+                # grad = model.locator.fc_out.weight.grad.clone().detach().view(-1)
+                # print(grad.cpu().numpy())
                 opt.step()
                 epoch_loss += total_loss.detach().item()
                 n_iter += 1
@@ -177,7 +180,7 @@ class TVDiag(object):
                 test_times.append(time_test)
                 top1, top2, top3, top4, top5 = accuracy(root_logit.cpu(), instance_labels,batch_graphs,
                                                                        topk=(1, 2, 3, 4, 5))
-                # nan_top1_root, top1, top2, top3, top4, top5 = accuracy(root_logit.cpu(), instance_labels, topk=(1, 2, 3, 4, 5), eval=True)
+                # nan_top1_root, top1, top2, top3, top4, top5 = accuracy(root_logit.cpu(), instance_labels, batch_graphs, topk=(1, 2, 3, 4, 5), eval=True)
                 avg_5 = np.mean([top1, top2, top3, top4, top5])
                 type_logit = type_logit.detach().cpu()
                 pre = precision(type_logit, type_labels, k=5)

@@ -24,27 +24,35 @@ parser.add_argument('--log_step', type=int, default=20)
 parser.add_argument('--eval_period', type=int, default=10)
 parser.add_argument('--reconstruct', type=bool, default=False)
 
-# dataset gaia
-parser.add_argument('--dataset', type=str, default='gaia', help='name of dataset')
-parser.add_argument('--N_I', type=int, default=10, help='number of instances')
-parser.add_argument('--N_T', type=int, default=5, help='number of failure types')
-# TVDiag
-parser.add_argument('--feat_drop', type=float, default=0.5)
-parser.add_argument('--attn_drop', type=float, default=0.5)
-parser.add_argument('--lr', type=float, default=0.001)
-parser.add_argument('--batch_size', type=int, default=1024)
-parser.add_argument('--guide_weight', type=float, default=0.1)
-
-# # dataset aiops22
-# parser.add_argument('--dataset', type=str, default='aiops22', help='name of dataset')
-# parser.add_argument('--N_I', type=int, default=40, help='number of instances')
-# parser.add_argument('--N_T', type=int, default=9, help='number of failure types')
+# # dataset gaia
+# parser.add_argument('--dataset', type=str, default='gaia', help='name of dataset')
+# parser.add_argument('--N_I', type=int, default=10, help='number of instances')
+# parser.add_argument('--N_T', type=int, default=5, help='number of failure types')
 # # TVDiag
 # parser.add_argument('--feat_drop', type=float, default=0.5)
 # parser.add_argument('--attn_drop', type=float, default=0.5)
+# parser.add_argument('--lr', type=float, default=0.01)
+# parser.add_argument('--batch_size', type=int, default=1024)
+# parser.add_argument('--guide_weight', type=float, default=0.1)
+# # Scorer
+# parser.add_argument('--scorer_layers', type=int, default=3)
+# parser.add_argument('--scorer_drop', type=float, default=0.3)
+
+# dataset aiops22
+parser.add_argument('--dataset', type=str, default='aiops22', help='name of dataset')
+parser.add_argument('--N_I', type=int, default=40, help='number of instances')
+parser.add_argument('--N_T', type=int, default=9, help='number of failure types')
+# TVDiag
+parser.add_argument('--feat_drop', type=float, default=0.5)
+parser.add_argument('--attn_drop', type=float, default=0.5)
 # parser.add_argument('--lr', type=float, default=0.0005)
-# parser.add_argument('--batch_size', type=int, default=512)
-# parser.add_argument('--guide_weight', type=float, default=0.4)
+# parser.add_argument('--lr', type=float, default=0.005)
+parser.add_argument('--lr', type=float, default=0.005)
+parser.add_argument('--batch_size', type=int, default=1024)
+parser.add_argument('--guide_weight', type=float, default=0.1)
+# Scorer
+parser.add_argument('--scorer_layers', type=int, default=3)
+parser.add_argument('--scorer_drop', type=float, default=0.3)
 
 
 # TVDiag
@@ -59,7 +67,7 @@ parser.add_argument('--CM', type=bool, default=False)
 parser.add_argument('--temperature', type=float, default=0.3)
 
 parser.add_argument('--dynamic_weight', type=bool, default=False)
-parser.add_argument('--epochs', type=int, default=1500)
+parser.add_argument('--epochs', type=int, default=1000)
 parser.add_argument('--aug', type=bool, default=False)
 parser.add_argument('--aug_percent', type=float, default=0.2)
 parser.add_argument('--aug_method', type=str, default='node_drop')

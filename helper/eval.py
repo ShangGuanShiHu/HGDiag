@@ -33,7 +33,7 @@ def accuracy(output, target, batch_graphs: DGLGraph, topk=(1, 5), eval=False):
             if rank_list[k].item() == target[idx].item():
                 topk_dict[k].append(target[idx].item())
                 break
-        if k != 1:
+        if k != 0:
             non_root.append(target[idx].item())
         start = end
     if eval:
@@ -46,7 +46,7 @@ def accuracy(output, target, batch_graphs: DGLGraph, topk=(1, 5), eval=False):
         topK_num = 0
         for k_temp in range(k):
             topK_num += len(topk_dict[k_temp])
-        res.append(topK_num/ batch_size)
+        res.append(topK_num / batch_size)
 
     return res
 

@@ -70,3 +70,5 @@ class UniGATEncoder(nn.Module):
         logits = self.pool(g, h)
 
         return torch.cat([h, dgl.broadcast_nodes(g, logits)], dim=1), logits
+
+        # return h, logits
