@@ -1,12 +1,7 @@
 import os
 import time
-from typing import List
 
-import dgl
-import torch
 import torch.nn.functional as F
-# from torch.cuda import amp
-from dhg import Hypergraph
 from torch.utils.tensorboard import SummaryWriter
 import shutil
 
@@ -15,6 +10,7 @@ from core.loss.AutomaticWeightedLoss import AutomaticWeightedLoss
 from core.model.MainModel import MainModel
 from core.aug import *
 from helper.eval import *
+from helper.hg_util import batch_hypergraph
 from .loss.DynamicNodeLoss import dynamicNodeLoss
 
 def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
@@ -22,20 +18,7 @@ def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
     if is_best:
         shutil.copyfile(filename, 'model_best.pth.tar')
 
-# 超图batch
-def batch_hypergraph(hypergraphs: List[Hypergraph], device):
-    node_nums = [hypergraph.num_v for hypergraph in hypergraphs]
-    hyperedges = hypergraphs[0].e[0].copy()
-
-    bais = 0
-    for i in range(len(hypergraphs) -1):
-        hypergraph = hypergraphs[i+1]
-        bais += node_nums[i]
-        hyperedges.extend([[v + bais for v in hyperedge] for hyperedge in hypergraph.e[0]])
-    node_num = bais + node_nums[-1]
-    return Hypergraph(node_num,hyperedges, device=device)
-
-class TVDiag(object):
+class HGDiag(object):
 
     def __init__(self, args, logger, device):
         self.args = args
@@ -58,11 +41,7 @@ class TVDiag(object):
 
     def printParams(self):
         self.logger.info(f"Training with: {self.device}")
-        self.logger.info(f"Status of task-oriented learning: {self.args.TO}")
-        self.logger.info(f"Status of cross-modal association: {self.args.CM}")
         self.logger.info(f"Status of dynamic_weight: {self.args.dynamic_weight}")
-        if self.args.aug:
-            self.logger.info(f"Augmente the data: {self.args.aug_method}")
         self.logger.info(f"lr: {self.args.lr}, weight_decay: {self.args.weight_decay}")
 
     def train(self, train_dl, test_data):
@@ -165,7 +144,7 @@ class TVDiag(object):
 
                 # 评估的时候数据也要放到gpu上
                 batch_graphs = dgl.batch(graphs).to(self.device)
-                batch_hypergraphs = batch_hypergraph(hypergraphs, self.device)
+                batch_hypergraphs = batch_hypergraph(hypergraphs, device=self.device)
 
                 instance_labels = torch.tensor(instance_labels)
                 type_labels = torch.tensor(type_labels)

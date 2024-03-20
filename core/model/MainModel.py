@@ -32,7 +32,7 @@ class MainModel(nn.Module):
                                       )
         fuse_dim = 3 * args.graph_out
 
-        self.locator = Scorer(in_dim=fuse_dim*2, num_residual_blocks=args.scorer_layers, feat_drop=args.scorer_drop)
+        self.locator = Scorer(in_dim=fuse_dim*2, num_residual_blocks=args.scorer_layers)
 
         self.typeClassifier = Classifier(in_dim=fuse_dim,
                                          hiddens=args.linear_hidden,

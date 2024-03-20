@@ -10,7 +10,7 @@ def dynamicNodeLoss(batch_graphs, root_logit, instance_labels):
     for idx, num_node in enumerate(batch_graphs.batch_num_nodes()):
         end = start + num_node.item()
         input = F.softmax(root_logit[start:end].H, dim=1)
-        input = torch.clamp(input, min=1e-30)
+        input = torch.clamp(input, min=1e-20)
         # 阈值
         # alp_normal = 1 * batch_graphs.batch_size / batch_graphs.number_of_nodes()
         # alp_abnormal = 0.9

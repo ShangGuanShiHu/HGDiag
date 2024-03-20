@@ -19,13 +19,13 @@ from torch.functional import F
 
 
 class Scorer(nn.Module):
-    def __init__(self, in_dim, hidden_dim=None, num_residual_blocks=3, feat_drop=0.3):
+    def __init__(self, in_dim, hidden_dim=None, num_residual_blocks=3):
         super(Scorer, self).__init__()
         if hidden_dim==None:
             hidden_dim = int(math.sqrt(in_dim))
         self.fc_in = nn.Linear(in_dim, hidden_dim)
         self.residual_blocks = nn.ModuleList(
-            [ResidualBlock(hidden_dim, hidden_dim, feat_drop=feat_drop) for _ in range(num_residual_blocks)])
+            [ResidualBlock(hidden_dim, hidden_dim) for _ in range(num_residual_blocks)])
         self.fc_out = nn.Linear(hidden_dim, 1)
 
     def forward(self, x):
